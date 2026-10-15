@@ -1,0 +1,293 @@
+:root {
+    --color-primary: #004d9a;
+    --color-primary-light: #0069c0;
+    --color-surface: #ffffff;
+    --color-background: #eef2f6;
+    --color-text-main: #1f1f1f;
+    --color-text-secondary: #757575;
+    --color-error: #ba1a1a;
+    --color-error-container: #ffdad6;
+    --radius-l: 24px;
+    --radius-m: 12px;
+    --radius-s: 8px;
+    --transition: 0.3s cubic-bezier(0.2, 0.0, 0.2, 1);
+}
+
+* { 
+    box-sizing: border-box; 
+    padding: 0;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: var(--color-background);
+    color: var(--color-text-main);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* --- Layout & Card --- */
+.login-layout {
+    width: 100%;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.login-card {
+    background: var(--color-surface);
+    width: 100%;
+    max-width: 400px;
+    padding: 40px 32px;
+    border-radius: var(--radius-l);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    text-align: center;
+    border-top: 6px solid var(--color-primary);
+}
+
+/* --- Typography --- */
+.header-section {
+    margin-bottom: 32px;
+}
+
+.icon-container {
+    width: 64px;
+    height: 64px;
+    background: var(--color-background);
+    border-radius: 50%;
+    margin: 0 auto 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.brand-icon { 
+    width: 100%; 
+    height: 100%; 
+    border-radius: 50%;
+    object-fit: contain; 
+}
+
+h1 { 
+    font-size: 28px; 
+    font-weight: 700; 
+    color: var(--color-primary); 
+    margin-bottom: 8px; 
+}
+
+.subtitle { 
+    font-size: 16px; 
+    color: var(--color-text-secondary); 
+}
+
+/* --- Role Switcher --- */
+.role-selector-container { 
+    margin-bottom: 24px; 
+}
+
+.role-selector {
+    background: #f1f3f4;
+    border-radius: 100px;
+    padding: 4px;
+    display: flex;
+    position: relative;
+    cursor: pointer;
+}
+
+.role-option {
+    flex: 1;
+    padding: 10px;
+    font-weight: 500;
+    font-size: 14px;
+    z-index: 2;
+    color: var(--color-text-secondary);
+    transition: color var(--transition);
+    text-align: center;
+    border-radius: 100px;
+}
+
+.role-option.active { 
+    color: var(--color-primary); 
+    text-align: center;
+}
+
+.role-highlight {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    width: calc(50% - 4px);
+    height: calc(100% - 8px);
+    background: white;
+    border-radius: 100px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: transform var(--transition);
+    z-index: 1;
+}
+
+/* Slide right for Pharmacist */
+.role-selector.staff-active .role-highlight { 
+    transform: translateX(100%); 
+}
+
+/* --- Inputs --- */
+.input-group { 
+    margin-bottom: 24px; 
+    text-align: left; 
+}
+
+label {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--color-text-main);
+    margin-bottom: 8px;
+}
+
+.input-wrapper { 
+    position: relative; 
+}
+
+input {
+    width: 100%;
+    padding: 14px 16px;
+    font-size: 16px;
+    border: 1px solid #c4c7c5;
+    border-radius: var(--radius-s);
+    outline: none;
+    transition: border-color var(--transition);
+}
+
+input:focus { 
+    border-color: var(--color-primary); 
+    border-width: 2px; 
+    padding: 13px 15px;
+}
+
+.helper-text {
+    font-size: 12px;
+    color: var(--color-text-secondary);
+    margin-top: 4px;
+    display: block;
+}
+
+/* --- Buttons --- */
+.btn {
+    width: 100%;
+    padding: 14px;
+    border-radius: 100px;
+    border: none;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    background: var(--color-primary);
+    color: white;
+    box-shadow: 0 4px 10px rgba(0, 77, 154, 0.2);
+    transition: transform 0.1s, box-shadow var(--transition);
+    position: relative;
+}
+
+.btn:hover {
+    box-shadow: 0 6px 15px rgba(0, 77, 154, 0.3);
+    transform: translateY(-1px);
+}
+
+.admin-mode .login-card {
+    border-top-color: #2c3e50;
+}
+
+.admin-mode h1 {
+    color: #2c3e50;
+}
+
+.admin-mode .staff-btn {
+    background: #2c3e50;
+}
+
+.admin-mode .staff-btn:hover {
+    box-shadow: 0 6px 15px rgba(44, 62, 80, 0.3);
+}
+
+/* --- Error Banner --- */
+.error-banner {
+    background-color: var(--color-error-container);
+    color: var(--color-error);
+    padding: 12px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.form-footer {
+    margin-top: 20px;
+    font-size: 14px;
+}
+
+.form-footer p { 
+    margin-bottom: 20px; 
+}
+
+.form-footer p:last-child { 
+    margin-bottom: -10px; 
+}
+
+.link {
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    font-weight: 500;
+
+}
+
+.link:hover {
+    color: var(--color-primary);
+    text-decoration: underline;
+}
+
+/* --- Password Strength Bar --- */
+.password-strength {
+    margin-top: 8px;
+}
+
+.strength-bar {
+    width: 100%;
+    height: 4px;
+    background-color: #e0e0e0;
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: 4px;
+}
+
+.strength-fill {
+    height: 100%;
+    width: 0%;
+    transition: width 0.3s ease, background-color 0.3s ease;
+    border-radius: 2px;
+}
+
+.strength-text {
+    font-size: 12px;
+    color: var(--color-text-secondary);
+    text-align: left;
+    font-weight: 500;
+}
+
+/* --- Loading Spinner --- */
+.spinner {
+    display: none;
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(255,255,255,0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+.btn.loading .btn-text { display: none; }
+.btn.loading .spinner { display: block; }

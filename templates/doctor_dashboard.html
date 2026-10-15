@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/doctor_dashboard.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login_staff.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">
+            <span class="role-badge">DOCTOR</span>
+            <span class="user-name">{{ doctor.name }}</span>
+        </div>
+        <a href="/logout" class="logout-btn">Logout</a>
+    </nav>
+
+    <div class="main-container">
+        <!-- Tabs -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('create')">Create Prescription</button>
+            <button class="tab-btn" onclick="switchTab('history')">History</button>
+        </div>
+
+        <!-- Tab Content: Create Prescription -->
+        <div id="createTab" class="tab-content">
+            <!-- Section 1: Search Patient -->
+            <div class="card search-card">
+                <h2>Start Consultation</h2>
+                <div class="search-box">
+                    <input type="text" id="patientIC" placeholder="Enter Patient IC (e.g. 900110141234)">
+                    <button onclick="searchPatient()" class="btn primary-btn" style="width: auto; padding: 0 30px;">Search</button>
+                </div>
+                <p id="searchStatus" class="status-text"></p>
+            </div>
+
+             <!-- Section 2: Prescription Form -->
+            <div id="prescriptionForm" class="card form-card">
+                <div class="patient-header">
+                    <div class="patient-avatar" id="pAvatar">?</div>
+                    <div class="patient-info">
+                        <h3 id="pName">No Patient Selected</h3>
+                        <p id="pIC">Please enter patient IC to fill this form.</p>
+                        <input type="hidden" id="pID">
+                    </div>
+                </div>
+            
+
+                <hr class="divider">
+
+                <fieldset id="prescFieldset" disabled>
+                    <div class="form-grid">
+                        <!-- Medicine Select -->
+                        <div class="input-group">
+                            <label>Select Medicine</label>
+                            <select id="medID">
+                                <option value="">-- Choose Medication --</option>
+                                {% for med in medicines %}
+                                <option value="{{ med.medicineID }}">
+                                    {{ med.name }} ({{ med.strength }} {{ med.form }} - {{ med.packSize }})
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <!-- Indication -->
+                        <div class="input-group">
+                            <label>Indication (Purpose)</label>
+                            <input type="text" id="indication" placeholder="e.g. Pain Relief">
+                        </div>
+
+                        <!-- Quantity & Supply -->
+                        <div class="input-group">
+                            <label>Quantity (Packs/Strips)</label>
+                            <input type="number" id="quantity" min="1" placeholder="e.g. 1">
+                        </div>
+                        <div class="input-group">
+                            <label>Supply Days</label>
+                            <input type="number" id="supplyDays" placeholder="e.g. 1">
+                        </div>
+
+                        <!-- Direction -->
+                        <div class="input-group full-width">
+                            <label>Direction (Sig)</label>
+                            <textarea id="direction" rows="3" placeholder="e.g. Take 1 tablet twice daily after meals"></textarea>
+                        </div>
+
+                        <!-- Refills -->
+                        <div class="input-group">
+                            <label>Refills Allowed</label>
+                            <select id="refills">
+                                <option value="0">None (One time)</option>
+                                <option value="1">1 Month (+1 Refill)</option>
+                                <option value="2">2 Months (+2 Refills)</option>
+                                <option value="3">3 Months (+3 Refills)</option>
+                                <option value="5">Chronic (5 Refills)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <button onclick="addMedicineToList()" class="btn secondary-btn" style="grid-column: 1 / -1;">
+                        + Add Medicine
+                    </button>
+
+                    <h4>Prescription Items</h4>
+                    <div id="medList">
+                        <p id="emptyListMsg">No medicines added yet.</p>
+                    </div>
+
+                    <button onclick="submitPrescription()" class="btn primary-btn submit-btn">
+                        Submit Prescription
+                    </button>
+
+                    <div id="submitStatus" class="submission-feedback"></div>
+                
+                </fieldset>
+            </div>
+        </div>
+
+        <!-- Tab Content: History -->
+        <div id="historyTab" class="tab-content">
+            <div class="card history-card">
+                <h2>Prescription History</h2>
+
+                <div class="history-controls">
+                    <div class="filter-buttons">
+                        <button class="filter-btn active" onclick="filterPrescriptions('all', event)">All</button>
+                        <button class="filter-btn" onclick="filterPrescriptions('pending', event)">Pending</button>
+                        <button class="filter-btn" onclick="filterPrescriptions('verified', event)">Verified</button>
+                        <button class="filter-btn" onclick="filterPrescriptions('active', event)">Active</button>
+                        <button class="filter-btn" onclick="filterPrescriptions('completed', event)">Completed</button>
+                        <button class="filter-btn" onclick="filterPrescriptions('rejected', event)">Rejected</button>
+                    </div>
+                    <input type="text" id="historySearch" placeholder="Search by prescription code, patient name, or IC..." onkeyup="searchHistory()">
+                </div>
+
+                <div class="history-table-container">
+                    <table class="history-table">
+                        <thead>
+                            <tr>
+                                <th>Prescription Code</th>
+                                <th>Patient</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                                <th>Rejected / Verified by</th>
+                                <th>Medicines</th>
+                            </tr>
+                        </thead>
+                        <tbody id="historyTableBody">
+                            <tr>
+                                <td colspan="6" class="loading">Loading prescription history...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="{{ url_for('static', filename='js/doctor_dashboard.js') }}"></script>
+    <script>
+        const CURRENT_DOCTOR_ID = "{{ doctor.doctorID }}";
+    </script>
+</body>
+</html>

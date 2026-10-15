@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff Portal Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login_staff.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin_dashboard.css')}}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display-swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar elevation-2">
+        <div class="nav-left">
+            <span class="nav-brand">System Admin</span>
+            <span class="nav-badge">Administrator</span>
+        </div>
+        <a href="/logout" class="logout-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                <polyline points="16 17 21 12 16 7"></polyline>
+                <line x1="21" y1="12" x2="9" y2="12"></line>
+            </svg>
+            Logout
+        </a>
+    </nav>
+
+    <div class="main-container">
+        <div class="stats-grid">
+            <div class="stat-card" onclick="showSection('staff')">
+                <div class="stat-icon staff-bg">
+                    <img src="{{ url_for('static', filename='public/images/doctor.png')}}" alt="Doctor Icon">
+                </div>
+                <div class="stat-info">
+                    <span class="stat-label">Medical Staff</span>
+                    <span class="stat-value">{{ stats.doctors + stats.pharmacists }}</span>
+                </div>
+            </div>
+
+            <div class="stat-card" onclick="showSection('patients')">
+                <div class="stat-icon patient-bg">
+                    <img src="{{ url_for('static', filename='public/images/patient.png')}}" alt="Patients Icon">
+                </div>
+                <div class="stat-info">
+                    <span class="stat-label">Total Patients</span>
+                    <span class="stat-value">{{ stats.patients }}</span>
+                </div>
+            </div>
+
+            <div class="stat-card" onclick="showSection('logs')">
+                <div class="stat-icon log-bg">
+                    <img src="{{ url_for('static', filename='public/images/lock.png')}}" alt="Logs Icon">
+                </div>
+                <div class="stat-info">
+                    <span class="stat-label">System Logs</span>
+                    <span class="stat-value">View Logs</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Staff Management Section -->
+        <div class="content-card elevation-1">
+            <div class="card-header-row">
+                <h2>Staff Management</h2>
+                <button onclick="openAddModal()" class="btn primary-btn add-btn">
+                    <span class="plus-icon">+</span> Register New Staff
+                </button>
+            </div>
+
+            <div class="tabs">
+                <button class="tab-btn active" onclick="switchTab('doctors')">Doctor</button>
+                <button class="tab-btn" onclick="switchTab('pharmacists')">Pharmacist</button>
+                <div class="tab-indicator"></div>
+            </div>
+
+            <div id="tab-doctors" class="tab-content active">
+                <div class="table-responsive">
+                    <table class="staff-table">
+                        <thead>
+                            <tr>
+                                <th>Code</th>
+                                <th>Name</th>
+                                <th>Department</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for doc in doctors %}
+                            <tr>
+                                <td><span class="id-pill">{{ doc.doctorCode }}</span></td>
+                                <td class="font-medium">{{ doc.name }}</td>
+                                <td>{{ doc.department }}</td>
+                                <td class="text-secondary">{{ doc.email }}</td>
+                                <td>{{ doc.phoneNumber }}</td>
+                                <td><span class="status-active">Active</span></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="tab-pharmacists" class="tab-content">
+                <div class="table-responsive">
+                    <table class="staff-table">
+                        <thead>
+                            <tr>
+                                <th>Code</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for pharm in pharmacists %}
+                            <tr>
+                                <td><span class="id-pill">{{ pharm.pharmacistCode }}</span></td>
+                                <td class="font-medium">{{ pharm.name }}</td>
+                                <td class="text-secondary">{{ pharm.email }}</td>
+                                <td>{{ pharm.phoneNumber }}</td>
+                                <td><span class="status-active">Active</span></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+
+        </div>
+
+        <!-- Patient Management Section -->
+        <div id="patients-section" class="content-card elevation-1" style="display: none;">
+            <div class="card-header-row">
+                <h2>Patient Management</h2>
+            </div>
+
+            <div class="table-responsive">
+                <table class="staff-table">
+                    <thead>
+                        <tr>
+                            <th>Code</th>
+                            <th>Name</th>
+                            <th>IC Number</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Date Registered</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for p in patients %}
+                        <tr>
+                            <td><span class="id-pill">{{ p.patientCode }}</span></td>
+                            <td class="font-medium">{{ p.name }}</td>
+                            <td>{{ p.ICnumber }}</td>
+                            <td class="text-secondary">{{ p.email }}</td>
+                            <td>{{ p.phoneNumber }}</td>
+                            <td>{{ p.createdAt }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- System Logs Section -->
+        <div id="logs-section" class="content-card elevation-1" style="display: none;">
+            <div class="card-header-row">
+                <h2>System Logs</h2>
+                <button onclick="refreshLogs()" class="btn secondary-btn refresh-btn" id="refreshLogsBtn" alt="Refresh Logs">
+                    <img src="{{ url_for('static', filename='public/images/refresh.png')}}" alt="Refresh Icon" class="refresh-icon">
+                </button>
+            </div>
+
+            <div class="table-responsive">
+                <table class="staff-table">
+                    <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>User</th>
+                            <th>Action</th>
+                            <th>Status</th>
+                            <th>Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for log in logs %}
+                        <tr>
+                            <td class="text-secondary">{{ log.timestamp }}</td>
+                            <td class="font-medium">{{ log.display_user }}</td>
+                            <td>
+                                {% if log.actionType == 'Face Scan' %} 📷 Face Scan
+                                {% elif log.actionType == 'QR Scan' %} 📱 QR Scan
+                                {% elif log.actionType == 'Web Login' %} 💻 Web Login
+                                {% else %} {{ log.actionType }} {% endif %}
+                            </td>
+
+                            <td>
+                                {% if log.status == 'Success' %}
+                                    <span class="status-active" style="background:#e8f5e9; color:#2e7d32;">Success</span>
+                                {% else %}
+                                    <span class="status-active" style="background:#ffebee; color:#c62828;">Failed</span>
+                                {% endif %}
+                            </td>
+                            <td class="text-secondary">{{ log.details }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Staff Modal -->
+    <div id="addModal" class="modal">
+        <div class="modal-card elevation-3">
+            <div class="modal-header">
+                <h3>Register New Staff</h3>
+                <button onclick="closeAddModal()" class="close-icon">&times;</button>
+            </div>
+
+            <form id="addStaffForm">
+                <div class="form-group">
+                    <label>Role</label>
+                    <div class="role-segment">
+                        <input type="radio" name="role" id="role-doc" value="Doctor" checked onchange="toggleDept()">
+                        <label for="role-doc" class="segment-opt">Doctor</label>
+                        
+                        <input type="radio" name="role" id="role-pharm" value="Pharmacist" onchange="toggleDept()">
+                        <label for="role-pharm" class="segment-opt">Pharmacist</label>
+                    </div>
+                </div>
+
+                <div class="form-grid-2">
+                    <div class="input-wrapper">
+                        <label>Full Name</label>
+                        <input type="text" id="newName" placeholder="e.g. Siti Aminah" required>
+                    </div>
+                    <div class="input-wrapper">
+                        <label>Phone Number</label>
+                        <input type="text" id="newPhone" placeholder="e.g. 0123456789" required>
+                    </div>
+                </div>
+
+                <div class="input-wrapper">
+                    <label>Email Address</label>
+                    <input type="email" id="newEmail" placeholder="e.g. staff@hospital.my" required>
+                </div>
+                <div class="input-wrapper" id="deptContainer">
+                    <label>Department</label>
+                    <input type="text" id="newDept" placeholder="e.g. Cardiology">
+                </div>
+                <div class="modal-actions">
+                    <button type="button" onclick="closeAddModal()" class="btn text-btn">Cancel</button>
+                    <button type="submit" class="btn primary-btn modal-submit">Register Staff</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Success Credentials Modal -->
+    <div id="successModal" class="modal">
+        <div class="modal-card elevation-3 success-card">
+            <div class="success-icon-circle">✓</div>
+            <h3>Staff Registered Successfully!</h3>
+            <p>The new staff has been registered. Below are the temporary login credentials:</p>
+
+            <div class="credential-box">
+                <div class="cred-row">
+                    <span class="cred-label">Username</span>
+                    <span class="cred-val" id="resUser">...</span>
+                </div>
+                <div class="cred-divider"></div>
+                <div class="cred-row">
+                    <span class="cred-label">Password</span>
+                    <span class="cred-val highlight" id="resPass">...</span>
+                </div>
+            </div>
+
+            <p class="helper-note">User will be required to change password on first login.</p>
+            <button onclick="location.reload()" class="btn primary-btn full-width">Done</button>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/admin_dashboard.js')}}"></script>
+</body>
+</html>

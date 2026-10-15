@@ -1,0 +1,232 @@
+:root {
+    --color-primary: #1c6fc7;
+    --color-primary-light: #3b82f6;
+    --color-primary-dark: #004d9a;
+    --color-surface: #ffffff;
+    --color-background: #f0f7ff;
+    --color-text-main: #1f1f1f;
+    --color-text-secondary: #757575;
+    --color-error: #ba1a1a;
+    --color-error-container: #ffdad6;
+    --radius-l: 24px;
+    --radius-m: 12px;
+    --radius-s: 8px;
+    --transition: 0.3s cubic-bezier(0.2, 0.0, 0.2, 1);
+}
+
+.register-card {
+    max-width: 500px;
+    position: relative;
+}
+
+/* --- Top Left Back Button --- */
+.nav-back-btn {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background: transparent;
+    border: none;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s, color 0.2s;
+    z-index: 10;
+}
+
+.nav-back-btn:hover {
+    background-color: var(--color-background);
+    color: var(--color-primary);
+}
+
+.section-title {
+    font-size: 14px;
+    font-weight: 700px;
+    color: var(--color-primary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 24px 0 16px 0;
+    text-align: left;
+    border-bottom: 2px solid var(--color-background);
+    padding-bottom: 8px;
+}
+
+/* --- Password Strength Meter --- */
+.password-strength {
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+.strength-bar {
+    width: 100%;
+    height: 4px;
+    background-color: #e0e0e0;
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.strength-fill {
+    height: 100%;
+    width: 0%;
+    transition: width 0.3s ease, background-color 0.3s ease;
+    border-radius: 2px;
+}
+
+.strength-text {
+    font-size: 12px;
+    color: var(--color-text-secondary);
+    margin-top: 4px;
+    text-align: left;
+}
+
+.password-requirements {
+    margin-top: 8px;
+    font-size: 12px;
+    color: var(--color-text-secondary);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px;
+    list-style-position: inside;
+}
+
+.req-item {
+    transition: color 0.3s ease;
+    display: list-item;
+    list-style-type: disc;
+    margin-left: 20px;
+}
+
+.req-item.met {
+    color: var(--color-primary);
+    font-weight: 600;
+    list-style-type: none;
+}
+
+.req-item.met::before {
+    content: "✓";
+}
+
+.helper-text {
+    font-size: 12px;
+    color: #666;
+}
+
+/* --- Camera Container ---*/
+.camera-container {
+    width: 100%;
+    height: 400px;
+    background: #000;
+    border-radius: var(--radius-m);
+    overflow: hidden;
+    position: relative;
+    margin-bottom: 12px;
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+video, canvas {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scaleX(-1);
+}
+
+/* Dotted Face Guide */
+.face-guide-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    pointer-events: none;
+    background: rgba(0, 0, 0, 0.4);
+    -webkit-mask: radial-gradient(ellipse 160px 220px at center, transparent 98%, black 100%);
+    mask: radial-gradient(ellipse 105px 140px at center, transparent 98%, black 100%);
+}
+
+.face-oval {
+    width: 200px;
+    height: 280px;
+    border: 3px dashed rgba(255, 255, 255, 0.6);
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    transition: border-color 0.3s ease;
+}
+
+/* Success State (Blink Detected) */
+.face-guide-overlay.success .face-oval {
+    border: 4px solid #4caf50;
+    box-shadow: 0 0 30px #4caf50;
+}
+
+.camera-status {
+    position: absolute;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(255, 255, 255, 0.7);
+    color: white;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.instruction-text {
+    font-size: 13px;
+    color: var(--color-text-secondary);
+    text-align: center;
+}
+
+/*--- Camera Overlay Guide ---*/
+.camera-overlay {
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    pointer-events: none;
+}
+
+.camera-overlay p {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 12px;
+    background: rgba(0, 0, 0, 0.3);
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+}
+
+/* --- Snap Button Variants ---*/
+.snap-btn {
+    background-color: var(--color-text-main);
+    color: white;
+    transition: background-color var(--transition);
+}
+
+.snap-btn:hover {
+    background-color: #000;
+}
+
+.snap-btn.retake {
+    background-color: var(--color-error);
+}
+
+.snap-btn.retake:hover {
+    background-color: #a00;
+}
+
+@media (orientation: portrait) {
+    .password-requirements {
+        margin-top: 8px;
+        font-size: 12px;
+        color: var(--color-text-secondary);
+        list-style-position: inside;
+        display: block;
+    }
+}

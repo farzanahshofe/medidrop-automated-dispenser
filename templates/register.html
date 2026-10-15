@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Registration</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login_patient.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/register.css')}}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display-swap" rel="stylesheet">
+
+    <script src="{{ url_for('static', filename='js/face-api.min.js')}}"></script>
+ </head>
+<body>
+    <div class="login-layout">
+        <div class="login-card elevation-2 register-card">
+            <div class="header-section">
+
+              <button type="button" id="topBackBtn" class="nav-back-btn" title="Go Back" style="display: block;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
+              </button>
+
+                <h1>Create Account</h1>
+                <p class="subtitle">Enter your details & verify your face</p>
+            </div>
+
+            <!-- Error/Success Banner -->
+             <div id="statusMessage" class="error-banner" style="display: none;">
+                <span class="error-icon">⚠️</span>
+                <span id="statusText" class="error-text"></span>
+             </div>
+
+             <form id="registerForm">
+                <!-- Section 1: Personal Details -->
+                 <div id="step1" class="step">
+                     <div class="section-title">Step 1: Personal Details</div>
+
+                     <div class="input-group">
+                        <label for="reg-name">Full Name</label>
+                        <input type="text" id="reg-name" placeholder="e.g. Ali bin Abu" required>
+                      </div>
+
+                      <div class="input-group">
+                        <label for="reg-ic">IC Number</label>
+                        <input type="text" id="reg-ic" 
+                          placeholder="e.g. 900110141234" 
+                          maxlength="12"
+                          pattern="\d{12}"
+                          title="Please enter a valid 12-digit IC number"
+                          oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                          required>
+                        <span class="helper-text">12 digits only, without dashes</span>
+                      </div>
+
+                      <div class="input-group">
+                        <label for="reg-phone">Phone Number</label>
+                        <input type="text" id="reg-phone" placeholder="e.g. 0123456789" required>
+                      </div>
+
+                      <div class="input-group">
+                        <label for="reg-email">Email</label>
+                        <input type="email" id="reg-email" placeholder="e.g. ali@example.com" required>
+                      </div>
+
+                      <div class="input-group">
+                        <label for="reg-pass">Password</label>
+                        <input type="password" id="reg-pass" placeholder="Create a secure password" required>
+
+                        <!-- Password Strength Bar -->
+                        <div class="password-strength">
+                            <div class="strength-bar">
+                                <div id="strength-fill" class="strength-fill"></div>
+                            </div>
+                            <div id="strength-text" class="strength-text">Password strength</div>
+                        </div>
+
+                        <div class="password-requirements">
+                            <div id="req-len" class="req-item">At least 8 characters</div>
+                            <div id="req-cap" class="req-item">At least 1 uppercase letter (A-Z)</div>
+                            <div id="req-low" class="req-item">At least 1 lowercase letter (a-z)</div>
+                            <div id="req-num" class="req-item">At least 1 number (0-9)</div>
+                            <div id="req-sym" class="req-item">At least 1 symbol (.!@#$%^&*)</div>
+                        </div>
+                      </div>
+
+                      <div class="input-group">
+                        <label for="confirm_password">Confirm Password</label>
+                        <input type="password" id="confirm_password" placeholder="Re-type password" required>
+                        <div id="match-status" class="helper-text" style="display: none;">Passwords do not match</div>
+                      </div>
+
+                      <button type="button" id="nextBtn" class="btn primary-btn">Next</button>
+                      <div class="form-footer">
+                        <p>Already have an account? <a href="/login" class="link">Login here</a></p>
+                      </div>
+                 </div>
+
+                 <!-- Section 2: Face Enrollment-->
+                 <div id="step2" class="step" style="display: none;">
+                     <div class="section-title">Step 2: Face Capture</div>
+                     <div class="input-group">
+                      <label>Live Verification</label>
+                      <div class="camera-container">
+                        <video id="video" autoplay playsinline muted></video>
+                        <canvas id="canvas" style="display: none;"></canvas>
+                        
+                        <div id="face-guide" class="face-guide-overlay">
+                          <div class="face-oval"></div>
+                        </div>
+
+                        <div class="camera-status" id="camStatus">Loading AI...</div>
+                      </div>
+
+                      <input type="hidden" id="face_image_base64">
+                      <p class="instruction-text" id="instruction">Position face in the oval line & <b>Blink<b> to capture.</b></p>
+
+                      <button type="button" id="retakeBtn" class="btn secondary-btn" style="display: none">Retake Photo</button>
+                     </div>
+
+                     <!-- Submit Action -->
+                     <button type="submit" id="submitBtn" class="btn primary-btn">
+                        <span class="btn-text">Complete Registration</span>
+                        <div class="spinner" id="btnSpinner"></div>
+                     </button>
+
+                     <div class="form-footer">
+                        <p>Already have an account? <a href="/login" class="link">Login here</a></p>
+                     </div>
+                 </div>
+             </form>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/register.js')}}"></script>
+</body>
+</html>

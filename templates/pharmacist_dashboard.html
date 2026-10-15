@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pharmacist Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login_staff.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/pharmacist_dashboard.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">PHARMACY PORTAL</div>
+        <div class="user-info">Logged in as: {{ session['name'] }}</div>
+        <a href="/logout" class="logout-btn">Logout</a>
+    </nav>
+
+    <div class="container">
+        <!-- Search Bar -->
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Search by prescription code, patient name, or IC..." value="{{ search_query }}" onkeyup="handleSearch()">
+            <button id="searchBtn" onclick="performSearch()">Search</button>
+            <button id="clearSearchBtn">Clear</button>
+        </div>
+
+        <!-- Material Design 3 Tabs -->
+        <div class="tabs">
+            <button class="tab-btn {% if active_tab == 'pending' %}active{% endif %}" data-tab="pending">Pending</button>
+            <button class="tab-btn {% if active_tab == 'all' %}active{% endif %}" data-tab="all">All</button>
+        </div>
+
+        <!-- Filters for All tab -->
+        {% if active_tab == 'all' %}
+        <div class="history-controls">
+            <div class="filter-buttons">
+                <button class="filter-btn active" onclick="filterPrescriptions('all', event)">All</button>
+                <button class="filter-btn" onclick="filterPrescriptions('pending', event)">Pending</button>
+                <button class="filter-btn" onclick="filterPrescriptions('verified', event)">Verified</button>
+                <button class="filter-btn" onclick="filterPrescriptions('active', event)">Active</button>
+                <button class="filter-btn" onclick="filterPrescriptions('completed', event)">Completed</button>
+                <button class="filter-btn" onclick="filterPrescriptions('rejected', event)">Rejected</button>
+            </div>
+        </div>
+        {% endif %}
+
+        <h1 id="pageTitle">
+            {% if search_query %}
+                Search Results for "{{ search_query }}"
+            {% elif active_tab == 'pending' %}
+                Pending Verification
+            {% elif active_tab == 'all' %}
+                All Prescriptions
+            {% endif %}
+        </h1>
+
+        {% if not prescriptions %}
+        <div class="empty-state">
+            {% if search_query %}
+                No prescriptions found for "{{ search_query }}".
+            {% elif active_tab == 'pending' %}
+                No pending prescriptions. All caught up!
+            {% elif active_tab == 'all' %}
+                No prescriptions found.
+            {% elif active_tab == 'history' %}
+                No prescription history available.
+            {% endif %}
+        </div>
+        {% endif %}
+
+        <div class="card-grid">
+            {% for p in prescriptions %}
+            <div class="presc-card {% if p.status == 'Verified' %}verified-card{% elif p.status == 'Rejected' %}rejected-card{% endif %}"
+                id="card-{{ p.prescriptionID }}">
+                <div class="card-header">
+                    <span class="presc-id">{{ p.prescCode }}</span>
+                    <span class="presc-status">{{ p.status }}</span>
+                </div>
+                <div class="card-body">
+                    <p class="ic-num">IC: {{ p.ICnumber }}</p>
+                    <p class="patient-name">Name: {{ p.patientName }}</p>
+                    <p class="doctor-sig">Prescribed by: Dr. {{ p.doctorName }}</p>
+                    {% if p.pharmacistName %}
+                    <p class="pharmacist-sig">
+                        {% if p.status == 'Rejected' %}
+                            Rejected by: {{ p.pharmacistName }}
+                        {% else %}
+                            Verified by: {{ p.pharmacistName }}
+                        {% endif %}
+                    </p>
+                    {% endif %}
+                    <hr>
+
+                    <div class="med-list-container">
+                        {% for item in p['items'] %}
+                        <div class="med-item">
+                            <div class="med-header">
+                                <span class="med-name">{{ item['name'] }}</span>
+                                <span class="med-strength">{{ item['strength'] }} {{ item['form'] }}, {{ item['packSize'] }}</span>
+                            </div>
+                            <div class="med-indication">
+                                <div>Indication: <strong>{{ item['indication'] }}</strong></div>
+                            </div>
+                            <div class="med-details">
+                                <div>Qty: <strong>{{ item['quantity'] }}</strong></div>
+                                <div>Supply: <strong>{{ item['supplyDays'] }} Days</strong></div>
+                            </div>
+                            <div class="med-sig">
+                                Sig: <em>{{ item['direction'] }}</em>
+                            </div>
+                            {% if not loop.last %} <div class="med-divider"></div> {% endif %}
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="card-actions">
+                    {% if p.status == 'Pending' %}
+                        <button onclick="rejectOrder('{{ p.prescriptionID }}')" class="btn-reject">Reject</button>
+                        <button onclick="verifyOrder('{{ p.prescriptionID }}')" class="btn-verify">Verify & Sign</button>
+                    {% elif p.status == 'Rejected' %}
+                        <div class="rejected-info">
+                            <strong>Rejected:</strong> {{ p.rejectionReason or 'No reason provided' }}
+                        </div>
+                    {% else %}
+                        <button class="btn-verified" disabled>Verified</button>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Action Modal -->
+    <div id="actionModal" class="modal">
+        <div class="modal-content">
+            <h2 id="modalTitle">Confirm Action</h2>
+            <p id="modalDesc">Are you sure you want to verify this prescription?</p>
+            <div id="rejectInputContainer" style="display: none; margin: 15px 0;">
+                <textarea id="rejectReason" placeholder="Enter reason for rejection..." rows="3"></textarea>
+            </div>
+            <div class="modal-actions">
+                <button onclick="closeModal()" class="btn-cancel">Cancel</button>
+                <button id="confirmBtn" class="btn-confirm">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/pharmacist_dashboard.js')}}"></script>
+</body>
+</html>

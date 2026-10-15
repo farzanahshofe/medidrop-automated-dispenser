@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Automated Pharmacy Dispenser</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />  
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/html5-qrcode@2.0.9/dist/html5-qrcode.min.js"></script>
+  <script src="{{ url_for('static', filename='js/face-api.min.js') }}"></script>
+</head>
+<body>
+  <div id="app" class="fullscreen">
+
+    <!-- Landing Screen -->
+    <section id="landing-screen" class="landing-screen active">
+      <div class="medicine-container">
+        <img src="{{ url_for('static', filename='public/images/medicine.gif') }}" alt="Medicine GIF" class="gif" />
+        <div class="abstract-shape-1"></div>
+      </div>
+      <div class="welcome-text">
+        <h1>MediDrop</h1>
+        <h2>Welcome to Automated Pharmacy Dispenser</h2>
+        <p class="sub-caption pulse">Tap the screen to begin</p>
+      </div>
+    </section>
+
+    <!-- Facial Recognition Screen -->
+    <section id="facial-recognition-screen" class="screen">
+      <div class="screen-header">
+        <h1>Facial Recognition</h1>
+        <h4>Secure access to your medication</h4>
+        <p>Step 1 of 3</p>
+      </div>
+      <div class="camera-placeholder" id="facial-camera-placeholder">
+        <div class="camera-box">
+          <img src="{{ url_for('static', filename='public/images/scan person.png') }}" alt="Person Icon" class="person-icon" id="facial-person-icon" />
+          <video id="facial-camera-video" autoplay muted playsinline style="display: none;"></video>
+          <div class="scanning-overlay" style="display: none;">
+            <div class="pulse-border"></div>
+          </div>
+        </div>
+      </div>
+      <p class="instruction-text" id="facial-instruction-text">Align your face within the frame and look directly at the camera</p>
+      <div class="best-tips">
+        <p class="best-tips-text">For best results</p>
+        <ul class="tips-list">
+          <li>Ensure good lighting</li>
+          <li>Remove glasses or hats</li>
+          <li>Keep your head straight and centered</li>
+        </ul>
+      </div>
+      <div class="buttons-container">
+        <button id="start-facial-recognition-btn" class="btn primary-btn">
+          <img src="{{ url_for('static', filename='public/images/scan.png') }}" alt="Scan Icon" class="button-icon" />
+          <span id="facial-button-text">Start Scan</span>
+        </button>
+        <button id="back-from-facial" class="btn secondary-btn">
+          <img src="{{ url_for('static', filename='public/images/back.png') }}" alt="Back Icon" class="button-icon" />
+          Back</button>
+      </div>
+
+      <!-- Scanning Status Display -->
+      <div id="facial-scanning-status" class="scanning-status" style="display: none;">
+        <div id="facial-status-box" class="status-box">
+          <div id="facial-status-text" class="status-text"></div>
+          <div id="facial-status-subcaption" class="status-subcaption"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Patient Profile Screen -->
+     <section id="patient-profile-screen" class="screen">
+      <div class="screen-header">
+        <h1>Welcome Back!</h1>
+        <h4>Identification verified successfully</h4>
+      </div>
+      <div class="profile-card">
+        <div class="profile-avatar">
+          <div id="kiosk-avatar-initial" class="avatar-circle" style="display: none;">
+            <span id="kiosk-initial-text"></span>
+          </div>
+          <img id="kiosk-avatar-img" 
+            src="" 
+            alt="User Avatar" 
+            class="profile-avatar" />
+        </div>
+        <h2 class="patient-name" id="patient-name-display">Lee Seungmin</h2>
+        <p class="patient-id" id="patient-id-display">Patient ID: PH-2024-7891</p>
+        <div class="patient-details-grid">
+          <div class="detail-item">
+            <span class="detail-label">IC Number:</span>
+            <span class="detail-value" id="patient-ic-display">900922-14-0909</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Phone Number:</span>
+            <span class="detail-value" id="patient-phone-display">01123232323</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Email:</span>
+            <span class="detail-value" id="patient-email-display">seungmin@gmail.com</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Active Prescription:</span>
+            <span class="detail-value active-prescription-count" id="patient-active-presc-display">2</span>
+          </div>
+        </div>
+      </div>
+      <div class="buttons-container single-button-container">
+        <button id="continue-to-medication-btn" class="btn primary-btn btn-icon-left">
+          <img src="{{ url_for('static', filename='public/images/capsule.png') }}" alt="Pill Icon" class="button-icon" />
+          Continue to Medication
+        </button>
+        <button id="back-from-profile" class="btn secondary-btn">
+          <img src="{{ url_for('static', filename='public/images/back.png') }}" alt="Back Icon" class="button-icon" />
+          Back</button>
+      </div>
+     </section>
+
+    <!-- QR Code Scanner Screen -->
+    <section id="qr-code-scanner-screen" class="screen">
+      <div class="screen-header">
+        <h1>QR Code Scanner</h1>
+        <h4>Scan your prescription slip</h4>
+        <p>Step 2 of 3</p>
+      </div>
+      <div class="camera-placeholder">
+        <div class="camera-box">
+          <img src="{{ url_for('static', filename='public/images/qr.png') }}" alt="QR Icon" class="qr-icon" id="qr-icon" />
+          <div id="qr-reader"></div>
+          <div class="scanning-overlay" id="qr-overlay" style="display: none;">
+            <div class="pulse-border"></div>
+          </div>
+        </div>
+      </div>
+      <p class="instruction-text" id="qr-instruction-text">Position the QR code from your prescription slip within the scanning area</p>
+      <div class="best-tips">
+        <p class="best-tips-text">For best results</p>
+        <ul class="tips-list">
+          <li>Hold the prescription slip steady</li>
+          <li>Ensure good lighting on the QR Code</li>
+          <li>Position code fully within the frame</li>
+        </ul>
+      </div>
+      <div class="buttons-container">
+        <button id="start-qr-scan-btn" class="btn primary-btn">
+          <img src="{{ url_for('static', filename='public/images/scan.png') }}" alt="Scan Icon" class="button-icon" />
+          <span id="qr-button-icon">Start Scan</span>
+        </button>
+        <button id="back-from-qr" class="btn secondary-btn">
+          <img src="{{ url_for('static', filename='public/images/back.png') }}" alt="Back Icon" class="button-icon" />
+          Back</button>
+      </div>
+      
+      <!-- Scanning Status Display -->
+      <div id="qr-scanning-status" class="scanning-status" style="display: none;">
+        <div id="qr-status-box" class="status-box">
+          <div id="qr-status-text" class="status-text"></div>
+          <div id="qr-status-subcaption" class="status-subcaption"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Prescription Details Screen -->
+    <section id="prescription-details-screen" class="screen">
+      <div class="screen-header">
+        <h1>Prescription Details</h1>
+        <h4>Review your medications before dispensing</h4>
+      </div>
+
+      <div class="prescription-container">
+        <div class="prescription-summary">
+          <h2>Prescription Summary</h2>
+          <div class="prescription-id-chip" id="presc-id">ID: RX-2024-15847</div>
+          <hr class="divider"/>
+          <div class="presc-grid">
+            <div class="presc-item">
+              <span class="presc-label">PRESCRIBED DATE</span>
+              <span class="presc-value" id="presc-prescribed-date">18 July 2025</span>
+            </div>
+            <div class="presc-item">
+              <span class="presc-label">DOCTOR</span>
+              <span class="presc-value" id="presc-doctor">Dr. Michael Chen, MD</span>
+            </div>
+            <div class="presc-item">
+              <span class="presc-label">PHARMACY</span>
+              <span class="presc-value" id="presc-pharmacy">Outpatient Pharmacy, HSAAS</span>
+            </div>
+            <div class="presc-item">
+              <span class="presc-label">VERIFIED BY</span>
+              <span class="presc-value" id="presc-pharmacist"></span>
+            </div>
+          </div>
+        </div>
+
+        <div id="medication-container" class="medication-list" >
+          <!-- Medication items will be dynamically inserted here -->
+        </div>
+      </div>
+
+      <div class="buttons-container">
+        <button id="dispense-btn" class="btn primary-btn">
+          <img src="{{ url_for('static', filename='public/images/dispense.png') }}" alt="Dispense Icon" class="button-icon" />
+          <span id="dispense-button-text">Dispense</span>
+        </button>
+        <button id="back-from-prescription" class="btn secondary-btn">
+          <img src="{{ url_for('static', filename='public/images/back.png') }}" alt="Back Icon" class="button-icon" />
+          Back</button>
+      </div>
+    </section>
+
+    <!-- Dispensing Screen -->
+    <section id="dispensing-screen" class="screen">
+      <div class="dispensing-container">
+        <img src="{{ url_for('static', filename='public/images/pills.gif') }}" alt="Dispensing GIF" class="dispensing-gif" />
+        <div class="dispensing-text">
+          <h1>Dispensing Your Medication...</h1>
+          <p class="dispensing-subcaption">Please wait while we prepare your medicines</p>
+        </div>
+      </div-class>
+    </section>
+
+    <!-- Collect Medicine Screen -->
+    <section id="collect-medicine-screen" class="screen">
+      <div class="screen-header">
+        <h1>Medication Pickup</h1>
+        <h4>Please collect your medication</h4>
+        <p>Step 3 of 3</p>
+      </div>
+      <div class="collect-container">
+        <img src="{{ url_for('static', filename='public/images/medicine.gif') }}" alt="Collect Medicine GIF" class="collect-gif" />
+        <div class="collect-text">
+          <h1>Your Medicine is Ready!</h1>
+          <p class="collect-subcaption">Please collect your medication from the dispensing area</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Medicine Picked Up Screen -->
+    <section id="medicine-picked-up-screen" class="screen">
+      <div class="pickup-container">
+        <img src="{{ url_for('static', filename='public/images/medicine.gif') }}" alt="Collect Medicine GIF" class="collect-gif" />
+        <div class="pickup-text">
+          <h1>Thank You!</h1>
+        </div>
+      </div>
+      <div class="buttons-container">
+        <button id="return-home-btn" class="btn primary-btn">
+          <img src="{{ url_for('static', filename='public/images/home.png') }}" alt="Home Icon" class="button-icon" />
+          <span id="home-button-text">Return Home</span>
+        </button>
+      </div>
+      <p class="auto-reset-text">Return home automatically in <span id="reset-countdown">15</span> seconds</p>
+    </section>
+
+  </div>
+
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>

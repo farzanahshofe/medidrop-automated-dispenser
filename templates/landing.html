@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Health Portal - Staff Access</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login_staff.css') }}">
+    <style>
+        body {
+            overflow: hidden;
+        }
+
+        .landing-layout {
+            display: flex;
+            min-height: 100vh;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            gap: 180px;
+        }
+
+        .landing-left {
+            flex: 1;
+            max-width: 500px;
+            text-align: center;
+        }
+
+        .landing-gif {
+            width: 100%;
+            max-width: 400px;
+            height: auto;
+            margin-bottom: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .landing-title {
+            font-size: 36px;
+            font-weight: 700;
+            color: var(--color-primary);
+            margin-bottom: 16px;
+        }
+
+        .landing-subtitle {
+            font-size: 18px;
+            color: var(--color-text-secondary);
+            line-height: 1.5;
+        }
+
+        .landing-right {
+            flex: 1;
+            max-width: 400px;
+            padding-left: 40px;
+            padding-bottom: 40px;
+        }
+
+        .role-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .role-card {
+            background: var(--color-surface);
+            border-radius: var(--radius-m);
+            padding: 24px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            text-align: center;
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .role-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+        }
+
+        .role-icon {
+            width: 48px;
+            height: 48px;
+            margin: 0 auto 16px;
+            background: var(--color-background);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .role-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--color-primary);
+            margin-bottom: 8px;
+        }
+
+        .role-description {
+            font-size: 14px;
+            color: var(--color-text-secondary);
+        }
+
+        @media (max-width: 768px) {
+            .landing-layout {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .landing-left, .landing-right {
+                max-width: 100%;
+            }
+
+            .landing-title {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="landing-layout">
+        <div class="landing-left">
+            <img src="{{ url_for('static', filename='public/images/team.gif') }}" alt="Team Collaboration" class="landing-gif">
+            <h1 class="landing-title">E-Health Portal Staff Access</h1>
+            <h2 class="landing-subtitle">Secure and efficient healthcare management platform for medical professionals</h2>
+        </div>
+        <div class="landing-right">
+            <div class="role-cards">
+                <a href="{{ url_for('login_admin') }}" class="role-card">
+                    <div class="role-icon">🛡️</div>
+                    <div class="role-title">Admin</div>
+                    <div class="role-description">Manage system settings, users, and oversee operations</div>
+                </a>
+                <a href="{{ url_for('login_staff', role='doctor') }}" class="role-card">
+                    <div class="role-icon">👨‍⚕️</div>
+                    <div class="role-title">Doctor</div>
+                    <div class="role-description">Create prescriptions and manage patient care</div>
+                </a>
+                <a href="{{ url_for('login_staff', role='pharmacist') }}" class="role-card">
+                    <div class="role-icon">💊</div>
+                    <div class="role-title">Pharmacist</div>
+                    <div class="role-description">Verify prescriptions and manage medication dispensing</div>
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

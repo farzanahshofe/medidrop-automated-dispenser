@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Health Portal Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login_patient.css')}}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display-swap" rel="stylesheet">
+</head>
+<body>
+    <div class="login-layout">
+        <div class="login-card elevation-2">
+            <!-- Header -->
+             <div class="header-section">
+                <div class="icon-container">
+                    <img src="{{ url_for('static', filename='public/images/medicine.gif')}}" alt="Logo" class="brand-icon">
+                </div>
+                <h1>Patient Portal</h1>
+                <p class="subtitle">Access your prescriptions & QR codes</p>
+             </div>
+
+             <!-- Error Feedback -->
+              {% if error %}
+              <div class="error-banner" role="alert">
+                <span class="error-icon">⚠️</span>
+                <span class="error-text">{{ error }}</span>
+              </div>
+              {% endif %}
+
+              <form method="POST" action="/login/patient" id="loginForm">
+
+                 <!-- Input Fields -->
+                  <div class="input-group">
+                    <label for="username">IC Number</label>
+                    <div class="input-wrapper">
+                        <input type="text" id="username" name="username" placeholder="e.g 900110141234" maxlength="12" required>
+                        <span class="focus-border"></span>
+                    </div>
+                    <span class="helper-text" id="id-helper">Enter your 12-digit Identity Card number</span>
+                  </div>
+
+                  <div class="input-group">
+                    <label for="password">Password</label>
+                    <div class="input-wrapper">
+                        <input type="password" id="password" name="password" placeholder="••••••••" required>
+                        <span  class="focus-border"></span>
+                    </div>
+                  </div>
+
+                  <!-- Primary Action -->
+                   <button type="submit" class="btn primary-btn" id="loginBtn">
+                    <span class="btn-text">Sign In</span>
+                    <div class="spinner" id="btnSpinner"></div>
+                   </button>
+
+                   <!-- Footer Links -->
+                    <div class="form-footer" id="patient-footer" style="display: block;">
+                        <p>New Patient? <a href="/register" class="link">Create an account</a></p>
+                        <p><a href="/forgot_password_patient" class="link">Forgot Password?</a></p>
+                    </div>
+              </form>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/login_patient.js')}}"></script>
+</body>
+</html>

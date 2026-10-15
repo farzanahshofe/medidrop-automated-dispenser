@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff Portal Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login_staff.css')}}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display-swap" rel="stylesheet">
+</head>
+<body class="{% if is_admin %}admin_mode{% else %}staff_mode{% endif %}">
+    <div class="login-layout">
+        <div class="login-card elevation-2">
+            <!-- Header -->
+             <div class="header-section">
+                <div class="icon-container">
+                    <img src="{{ url_for('static', filename='public/images/staff.gif')}}" alt="Logo" class="brand-icon">
+                </div>
+                <h1>{% if is_admin %}System Admin{% else %}Hospital Staff{% endif %}</h1>
+                <p class="subtitle">{% if is_admin %}Authorized Personnel Only{% else %}Hospital Management System{% endif %}</p>
+             </div>
+
+             <!-- Error Feedback -->
+              {% if error %}
+              <div class="error-banner" role="alert">
+                <span class="error-icon">⚠️</span>
+                <span class="error-text">{{ error }}</span>
+              </div>
+              {% endif %}
+
+              <form method="POST" action="{{ url_for('login_admin') if is_admin else url_for('login_staff') }}" id="loginForm">
+                
+                {% if not is_admin %}
+                <div class="role-selector-container">
+                    <div class="role-selector" id="roleSelector">
+                        <div class="role-option {% if preselected_role == 'doctor' %}active{% endif %}" id="btn-doctor" onclick="setStaffRole('Doctor')" tabindex="0" role="button">
+                            Doctor
+                        </div>
+                        <div class="role-option {% if preselected_role == 'pharmacist' %}active{% endif %}" id="btn-pharmacist" onclick="setStaffRole('Pharmacist')" tabindex="0" role="button">
+                            Pharmacist
+                        </div>
+                        <div class="role-highlight"></div>
+                    </div>
+                </div>
+                <input type="hidden" name="role" id="staff_role" value="{% if preselected_role == 'doctor' %}Doctor{% else %}Pharmacist{% endif %}">
+                {% endif %}
+
+                <!-- Input Fields -->
+                
+                <div class="input-group">
+                    <label for="username" id="id-label">
+                        {% if is_admin %}Admin ID{% else %}Doctor ID{% endif %}
+                    </label>
+                    <div class="input-wrapper">
+                        <input type="text" id="username" name="username"
+                            placeholder="{% if is_admin %} e.g. admin{% else %} e.g. DR0001{% endif %}" required>
+                        <span  class="focus-border"></span>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="password">Password</label>
+                    <div class="input-wrapper">
+                        <input type="password" id="password" name="password" placeholder="••••••••" required>
+                        <span  class="focus-border"></span>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn primary-btn" id="loginBtn">
+                    <span class="btn-text">Login</span>
+                    <div class="spinner" id="btnSpinner"></div>
+                </button>
+
+                <!-- Footer -->
+                 <div class="form-footer">
+                    <p><a href="/forgot_password" class="link">Forgot Password?</a></p>
+                    {% if is_admin %}
+                    <p><a href="/login/staff" class="link secondary-link">Login as Staff</a></p>
+                    {% else %}
+                    <p><a href="/login/admin" class="link secondary-link">Login as Admin</a></p>
+                    {% endif %}
+                 </div>
+              </form>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/login_staff.js')}}"></script>
+</body>
+</html>

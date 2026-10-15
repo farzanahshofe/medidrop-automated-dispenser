@@ -1,0 +1,372 @@
+body {
+    align-items: flex-start;
+    background: #f8f9fa;
+}
+
+.navbar {
+    background: white;
+    padding: 15px 20px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    position: fixed;
+    top: 0;
+    z-index: 100;
+}
+
+.nav-logo {
+    font-weight: 700;
+    color: var(--color-primary);
+    font-size: 18px;
+}
+
+.logout-btn {
+    color: #dc3545;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+/* Profile Header */
+.dashboard-container {
+    margin-top: 80px;
+    width: 100%;
+    max-width: 600px;
+    padding: 20px;
+}
+
+.profile-header {
+    display: flex;
+    align-items: center;
+    background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+    padding: 20px;
+    border-radius: 16px;
+    color: white;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 15px rgba(28, 111, 199, 0.3);
+}
+
+.avatar-container {
+    margin-right: 15px;
+    position: relative;
+    width: 60px;
+    height: 60px;
+}
+
+.avatar-circle {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background-color: white; 
+    color: var(--color-primary); 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 28px;
+    font-weight: 700;
+    border: 3px solid rgba(255,255,255,0.5);
+    text-transform: uppercase;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.profile-img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 3px solid rgba(255,255,255,0.5);
+    object-fit: cover;
+}
+
+.profile-info h2 {
+    margin: 0;
+    font-size: 20px;
+}
+
+.profile-info p {
+    margin: 2px 0 0 0;
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+/* Prescriptions Cards */
+.section-title {
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.empty-state {
+    text-align: center;
+    color: #999;
+    margin-top: 40px;
+}
+
+.presc-card {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    margin-bottom: 15px;
+    position: relative;
+    transition: transfrom 0.2s;
+}
+
+.presc-card:active {
+    transform: scale(0.98);
+}
+
+.card-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.prec-id {
+    font-weight: 700;
+    color: var(--color-primary);
+    font-size: 16px;
+    margin-right: 8px;
+}
+
+.presc-date {
+    font-size: 12px;
+    color: #888;
+}
+
+.status-badge {
+    font-size: 11px;
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.status-badge.verified {
+    background: #e3f2fd;
+    color: #1976d2;
+}
+
+.status-badge.active {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+.doctor-name {
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 10px;
+}
+
+.divider {
+    border: 0;
+    border-top: 1px dashed #eee;
+    margin: 10px 0;
+}
+
+/* Medicine Info */
+.med-item {
+    padding: 10px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    border: 1px solid #eee;
+}
+
+.med-top {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 4px;
+}
+
+.med-name {
+    font-weight: 600;
+    color: #333;
+    font-size: 15px;
+}
+
+.med-qty {
+    font-weight: 700;
+    color: #555;
+}
+
+.med-sig {
+    font-size: 13px;
+    color: #555;
+    font-style: italic;
+    margin-top: 6px;
+    line-height: 1.4;
+}
+
+.med-footer {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: #888;
+}
+
+.med-refill strong {
+    color: var(--color-primary);
+}
+
+.next-pickup-info {
+    font-size: 14px;
+    color: #666;
+    margin-top: 4px;
+    text-align: center;
+}
+
+/* QR Button */
+.qr-btn {
+    background: var(--color-primary-light);
+    color: white;
+    border: none;
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: 600;
+    margin-top: 15px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(5px);
+}
+
+.modal-content {
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+    text-align: center;
+    width: 90%;
+    max-width: 320px;
+    position: relative;
+    animation: popUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.modal-title {
+    color: var(--color-primary);
+    margin-bottom: 5px;
+}
+
+.modal-subtitle {
+    color: #666;
+    font-size: 13px;
+}
+
+#qrcode {
+    margin: 20px auto;
+}
+
+#qrcode img {
+    margin: 0 auto;
+}
+
+.close-btn {
+    margin-top: 20px;
+    background: #eee;
+    color: #333;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 50px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+/* --- Tabs --- */
+.tabs {
+    display: flex;
+    border-bottom: 2px solid #e0e0e0;
+    margin-bottom: 20px;
+}
+
+.tab-btn {
+    flex: 1;
+    text-align: center;
+    padding: 12px;
+    text-decoration: none;
+    color: #777;
+    font-weight: 600;
+    font-size: 14px;
+    background: none;
+    border-bottom: 3px solid transparent;
+}
+
+.tab-btn.active {
+    color: var(--color-primary);
+    border-bottom-color: var(--color-primary);
+}
+
+/* --- Status Badges --- */
+.status-badge {
+    font-size: 11px; 
+    padding: 4px 8px; 
+    border-radius: 12px; 
+    font-weight: 700; 
+    text-transform: uppercase;
+}
+
+.status-badge.pending { 
+    background: #fff3e0; 
+    color: #ef6c00; 
+}
+
+.status-badge.verified { 
+    background: #e3f2fd; 
+    color: #1976d2; 
+}
+
+.status-badge.active {
+    background: #e8f5e9; 
+    color: #2e7d32; 
+}
+
+.status-badge.completed { 
+    background: #eee; 
+    color: #777; 
+}
+
+.status-badge.rejected { 
+    background: #ffebee; 
+    color: #c62828; 
+}
+
+/* --- Pending Card Style --- */
+.pending-card {
+    border: 1px dashed #ccc;
+    background-color: #fafafa;
+}
+.qr-btn.disabled {
+    background-color: #ccc;
+    cursor: default;
+    opacity: 0.8;
+}
+.qr-btn.error {
+    background-color: #ffcdd2;
+    color: #b71c1c;
+    border: 1px solid #e57373;
+    cursor: default;
+}
+
+
+@keyframes popUp {
+    from { transform: scale(0.8); opacity: 0;}
+    to { transform: scale(1); opacity: 1;}
+}

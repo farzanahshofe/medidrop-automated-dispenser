@@ -1,0 +1,574 @@
+.navbar {
+    background: #00769b;
+    color: white;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    width: 100%;
+    z-index: 100;
+    margin: 0;
+}
+
+.nav-brand {
+    font-weight: 700;
+    font-size: 18px;
+    letter-spacing: 0.5px;
+}
+
+.user-info {
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+.logout-btn {
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 6px 12px;
+    border-radius: 4px;
+    transition: background 0.2s;
+}
+
+.logout-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.container {
+    width: 100%;    
+    padding: 25px;
+    box-sizing: border-box;
+    text-align: left;
+}
+
+h1 {
+    color: #333;
+    margin-bottom: 25px;
+    margin-top: 0;
+    font-size: 24px;
+    border-bottom: 2px solid #e0e0e0;
+    padding-bottom: 10px;
+    display: inline-block;
+}
+
+.card-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: flex-start;
+}
+
+.presc-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+    flex: 0 0 320px;
+    height: fit-content;
+}
+
+.presc-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.12);
+}
+
+.card-header {
+    background: #e0f2f1;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #b2dfdb;
+}
+
+.presc-id {
+    font-weight: 700;
+    color: #00659c;
+    font-size: 15px;
+}
+
+.presc-status {
+    font-size: 11px;
+    color: #004d40;
+    background: #b2dfdb;
+    padding: 3px 8px;
+    border-radius: 10px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.card-body {
+    padding: 15px;
+}
+
+.ic-num, .patient-name {
+    color: #555;
+    font-size: 13px;
+    font-family: monospace;
+}
+
+hr {
+    border: none;
+    border-top: 1px solid #eee;
+    margin: 10px 0;
+}
+
+.med-list-container {
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    padding: 10px;
+    border: 1px solid #eee;
+}
+
+.med-item {
+    margin-bottom: 8px;
+}
+
+.med-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 4px;
+}
+
+.med-name {
+    font-weight: 700;
+    color: #333;
+    font-size: 14px;
+}
+
+.med-strength {
+    font-size: 12px;
+    color: #666;
+}
+
+.med-indication {
+    font-size: 12px;
+    color: #444;
+    margin-bottom: 4px;
+}
+
+.med-details {
+    display: flex;
+    gap: 15px;
+    font-size: 12px;
+    color: #444;
+    margin-bottom: 4px;
+}
+
+.med-sig {
+    font-size: 12px;
+    color: #555;
+    font-style: italic;
+}
+
+.med-divider {
+    height: 1px;
+    background-color: #e0e0e0;
+    margin: 8px 0;
+}
+
+.doctor-sig, .pharmacist-sig {
+    font-size: 12px;
+    color: #888;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+.card-actions {
+    padding: 10px 15px 15px;
+    display: flex;
+    gap: 10px;
+    background: #fff;
+    border-top: 1px solid #eee;
+}
+
+.btn-verify, .btn-reject {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-verify {
+    background: #00769b;
+    color: white;
+}
+
+.btn-verify:hover {
+    background: #004d40;
+    box-shadow: 0 2px 5px rgba(0, 121, 107, 0.3);
+}
+
+.btn-reject {
+    background: white;
+    color: #c62828;
+    border: 1px solid #ef9a9a;
+}
+
+.btn-reject:hover {
+    background: #ffebee;
+}
+
+.empty-state {
+    text-align: center;
+    color: #999;
+    margin-top: 80px;
+    font-size: 18px;
+    font-weight: 500;
+}
+
+/* Submission Feedback */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(4px);
+}
+
+.modal-content {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    width: 400px;
+    max-width: 90%;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    animation: scaleIn 0.2s ease-out;
+}
+
+@keyframes scaleIn {
+    from {
+        transform: scale(0.9);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.modal-content h2 {
+    font-size: 20px;
+    margin-top: 0;
+    color: #333;
+}
+
+.modal-content p{
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-family: inherit;
+    resize: vertical;
+    box-sizing: border-box;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.btn-cancel, .btn-confirm {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.btn-cancel { background: #f5f5f5; color: #555; }
+.btn-cancel:hover { background: #eee; }
+
+.btn-confirm { background: #00769b; color: white; }
+.btn-confirm:hover { background: #004d40; }
+.btn-confirm.danger { background: #c62828; }
+.btn-confirm.danger:hover { background: #b71c1c; }
+
+.submission-feedback {
+    margin-top: 15px;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    text-align: center;
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+/* Success State */
+.submission-feedback.success {
+    display: block;
+    opacity: 1;
+    background-color: #d1e7dd;
+    color: #0f5132;
+    border: 1px solid #badbcc;
+}
+
+/* Error State */
+.submission-feedback.error {
+    display: block;
+    opacity: 1;
+    background-color: #f8d7da;
+    color: #842029;
+    border: 1px solid #f5c2c7;
+}
+
+/* --- Verified State --- */
+.verified-card .card-header {
+    background-color: #e0e0e0;
+    border-bottom: 1px solid #ccc;
+}
+
+.verified-card .presc-id {
+    color: #666;
+}
+
+.verified-card .presc-status {
+    background-color: #4caf50;
+    color: white;
+}
+
+.verified-card .card-body {
+    opacity: 0.6;
+    background-color: #fafafa;
+}
+
+.verified-card .card-actions {
+    background-color: #f5f5f5;
+    border-top: 1px solid #ddd;
+}
+
+.btn-verified {
+    width: 100%;
+    padding: 10px;
+    background-color: #e0e0e0;
+    color: #4caf50;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-weight: 700;
+    cursor: default;
+}
+
+/*--- Completed State --- */
+.completed-card .card-header {
+    background-color: #e8f5e9;
+    border-bottom: 1px solid #c8e6c9;
+}
+
+.completed-card .presc-id {
+    color: #2e7d32;
+}
+
+.completed-card .presc-status {
+    background-color: #2e7d32;
+    color: white;
+}
+
+.completed-card .card-body {
+    opacity: 0.7;
+    background-color: #fafafa;
+}
+
+.completed-card .card-actions {
+    background-color: #f0f8f0;
+    border-top: 1px solid #dceddc;
+}
+
+
+/* --- Rejected State --- */
+.rejected-card .card-header {
+    background-color: #ffebee;
+    border-bottom: 1px solid #ffcdd2;
+}
+
+.rejected-card .presc-id {
+    color: #c62828;
+}
+
+.rejected-card .presc-status {
+    background-color: #c62828;
+    color: white;
+}
+
+.rejected-info {
+    width: 100%;
+    padding: 10px;
+    background-color: #ffebee;
+    color: #c62828;
+    border: 1px solid #ffcdd2;
+    border-radius: 6px;
+    font-size: 14px;
+    text-align: center;
+    font-weight: 500;
+}
+
+/* --- Search Bar --- */
+.search-container {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    align-items: center;
+}
+
+.search-container input {
+    flex: 1;
+    padding: 12px 16px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 14px;
+    background: white;
+    transition: border-color 0.2s ease;
+}
+
+.search-container input:focus {
+    outline: none;
+    border-color: #00769b;
+    box-shadow: 0 0 0 2px rgba(0, 118, 155, 0.1);
+}
+
+.search-container button {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+#searchBtn {
+    background: #00769b;
+    color: white;
+}
+
+#searchBtn:hover {
+    background: #005a7d;
+}
+
+#clearSearchBtn {
+    background: #f5f5f5;
+    color: #666;
+    border: 1px solid #e0e0e0;
+}
+
+#clearSearchBtn:hover {
+    background: #e0e0e0;
+}
+
+/* --- Material Design 3 Tabs --- */
+.tabs {
+    display: flex;
+    border-bottom: 1px solid #e0e0e0;
+    margin-bottom: 20px;
+    background: white;
+    border-radius: 12px 12px 0 0;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.tab-btn {
+    flex: 1;
+    padding: 16px 24px;
+    border: none;
+    background: transparent;
+    color: #666;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.2s ease;
+    border-bottom: 3px solid transparent;
+}
+
+.tab-btn:hover {
+    background: rgba(0, 118, 155, 0.05);
+    color: #00769b;
+}
+
+.tab-btn.active {
+    color: #00769b;
+    background: rgba(0, 118, 155, 0.05);
+    border-bottom-color: #00769b;
+    font-weight: 600;
+}
+
+.tab-btn.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: #00769b;
+    border-radius: 3px 3px 0 0;
+}
+
+/* History Controls */
+.history-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.filter-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.filter-btn {
+    padding: 8px 16px;
+    border: 1px solid #ddd;
+    background: white;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+
+.filter-btn.active {
+    background: #00769b;
+    color: white;
+    border-color: #00769b;
+}
+
+.filter-btn:hover {
+    border-color: #00769b;
+}
+
+body {
+    display: block;
+    justify-content: initial;
+    align-items: initial;
+    min-height: initial;
+    margin: 0;
+}
